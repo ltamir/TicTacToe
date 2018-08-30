@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "TocTacToe.h"
+#include "TicTacToe.h"
 #include "stdlib.h"
 
 char msg_table[14][50] = {

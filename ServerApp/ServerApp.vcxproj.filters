@@ -21,7 +21,7 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TocTacToe.h">
+    <ClInclude Include="TicTacToe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,7 +35,7 @@
     <ClCompile Include="TicTacToeProtocol.h">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="TocTacToe.cpp">
+    <ClCompile Include="TicTacToe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
