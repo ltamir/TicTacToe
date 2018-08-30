@@ -46,7 +46,7 @@ typedef struct
 }player_t;
 
 
-
+// used with msg_table[] in impl. file
 #define MSG_GREETING 0
 #define MSG_PROMPT_NAME 1
 #define MSG_PROMPT_SIGN 2
