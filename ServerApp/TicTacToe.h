@@ -30,6 +30,7 @@
 #define PLAYER_STATE_GAMEOVER 12
 #define PLAYER_STATE_EXIT 13
 #define PLAYER_STATE_WAIT 14
+#define PLAYER_STATE_WINNER 15
 
 #define PLAYER_STATE_INIT 0
 
@@ -55,12 +56,13 @@ typedef struct
 #define MSG_PROMPT_CELL 5
 #define MSG_ERR_CELL 6
 #define MSG_WAIT_PLAYER_2 7
-#define MSG_ERR_WINNER 8
+#define MSG_WINNER 8
 #define MSG_GAME_OVER 9
 #define MSG_WAIT_FOR_YOUR_TURN 10
 #define MSG_FLAG 11
 #define MSG_PRINT_BOARD 12
 #define MSG_PRINT_AVAILABLE 13
+
 
 #define ONE 0x31
 #define TWO 0x32
@@ -78,9 +80,12 @@ void switchPlayer();
 int ApplyCell(char cell, char sign);
 
 const char* getMsg(int msgId);
+char* getWritableMsg(int msgId);
 
 void setFlag(int msgId, char flag);
 
 int getCurrentPlayer();
 
-void setCurrentPlayer(player_t * player);
+void setLastPlayer(player_t * player);
+
+player_t * getLastPlayer();

@@ -42,12 +42,12 @@ char borderedPos[58] = { FLAG_PRINT_STRING,
 	BORDER_HORIZONTAL, BORDER_HORIZONTAL,BORDER_HORIZONTAL, BORDER_HORIZONTAL,BORDER_HORIZONTAL, BORDER_HORIZONTAL,BORDER_HORIZONTAL,CRLF
 };
 int board_mapping[BOARD_SIZE] = {9,11,13,25,27,29,41,43,45};
-int currPlayer;
+int currPlayer = PLAYER_A;
 int cellCounter = 0;
-player_t *currentPlayer;
+player_t *winner = NULL;
 
 
-// mark both play 
+// mark both boards with play step
 void paintBoard(int pos, char sign) 
 {
 	char *boardData = &borderedBoard[1];
@@ -55,8 +55,44 @@ void paintBoard(int pos, char sign)
 
 	boardData = &borderedPos[1];
 	boardData[board_mapping[pos]] = 0x2F;
+
+	//checkForWinning();
 }
 
+//sum horizontal, vertical and diagonal cells to check for a match
+int checkForWinning() 
+{
+	char cells = 0;
+	int pos;
+	int win = 0;
+	char *boardData = &borderedBoard[1];
+
+	if (cellCounter == 0) // beginning of the game
+		return win;
+
+	// horizontal
+	if (playBoard[0] != CELL_EMPTY && playBoard[0] == playBoard[1] && playBoard[0] == playBoard[2])
+		win = 1;
+	else if (playBoard[3] != CELL_EMPTY && playBoard[3] == playBoard[4] && playBoard[3] == playBoard[5])
+		win = 1;
+	else if (playBoard[6] != CELL_EMPTY && playBoard[6] == playBoard[7] && playBoard[6] == playBoard[8])
+		win = 1;
+	// vertical
+	if (playBoard[0] != CELL_EMPTY && playBoard[0] == playBoard[3] && playBoard[0] == playBoard[6])
+		win = 1;
+	else if (playBoard[1] != CELL_EMPTY && playBoard[1] == playBoard[4] && playBoard[1] == playBoard[7])
+		win = 1;
+	else if (playBoard[2] != CELL_EMPTY && playBoard[2] == playBoard[5] && playBoard[2] == playBoard[8])
+		win = 1;
+	// diagonal
+	if (playBoard[0] != CELL_EMPTY && playBoard[0] == playBoard[4] && playBoard[0] == playBoard[8])
+		win = 1;
+	else if (playBoard[2] != CELL_EMPTY && playBoard[2] == playBoard[4] && playBoard[2] == playBoard[6])
+		win = 1;
+
+	
+	return win;
+}
 
 int ApplyCell(char cell, char sign)
 {
@@ -69,10 +105,16 @@ int ApplyCell(char cell, char sign)
 		paintBoard(cellPos, sign);
 		cellCounter++;
 
+		// if we have a winner
+		if (checkForWinning() == 1)
+		{
+			return PLAYER_STATE_WINNER;
+		}
+
 		// if game is over
 		if (cellCounter == BOARD_SIZE)
 		{
-			return PLAYER_STATE_EXIT;
+			return PLAYER_STATE_GAMEOVER;
 		}
 
 		return PLAYER_STATE_NEXT;
@@ -88,8 +130,13 @@ int getCurrentPlayer()
 	return currPlayer;
 }
 
-void setCurrentPlayer(player_t *player) {
-	currentPlayer = player;
+void setLastPlayer(player_t *player) {
+	winner = player;
+}
+
+player_t * getLastPlayer()
+{
+	return winner;
 }
 
 void switchPlayer() {
@@ -106,7 +153,13 @@ const char* getMsg(int msgId) {
 		return borderedBoard;
 	if (msgId == MSG_PRINT_AVAILABLE)
 		return borderedPos;
+		
 
+	return msg_table[msgId];
+}
+
+char* getWritableMsg(int msgId)
+{
 	return msg_table[msgId];
 }
 
